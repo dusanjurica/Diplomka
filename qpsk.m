@@ -1,5 +1,6 @@
 %QPSK modulator%
 
+%% QPSK Modulator
 clear all
 close all
 clc
