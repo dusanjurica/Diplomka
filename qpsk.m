@@ -1,12 +1,13 @@
-%QPSK modulator%
-
 %% QPSK Modulator
 clear all
 close all
 clc
 
+
 N=500; % Pocet datovych bitu
-data = randsrc(1,N,[0 1]); % Generuje nahodna data podle slovniku [-1,1]
+% Testovaci data, bud nahodne nebo same nuly
+data = randsrc(1,N,[0 1]); % Generuje nahodna data podle slovniku [0,1]
+%data = randsrc(1,N, [0,0]);
 Rb = 1e3; % Bitrate
 amplitude = 1;
 
@@ -51,8 +52,8 @@ plotHandle=plot(qpskModulated);
 xlabel('Samples');
 ylabel('Amplitude');
 title('QPSK modulated Data');
-xlimits = XLIM;   
-ylimits = YLIM;
+xlimits = xlim;   
+ylimits = ylim;
 axis([xlimits,ylimits(1)-0.5,ylimits(2)+0.5]) ;
 grid on;
 
@@ -74,12 +75,15 @@ subplot(212)
 fftqpskmodulated = filter([0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 ...
     0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 ], 1, fftqpskmodulated);
 plot(fftqpskmodulated);
+
 title('fft of qpsk modulated data');
 xlabel('frequency [Hz]');
 ylabel('value [V]');
 grid on;
 
-% ROC krivky
+% Ulozit nekolik analyz do souboru, tyto pak postoupit naladeni detekcniho
+% prahu
+
 
 
 
