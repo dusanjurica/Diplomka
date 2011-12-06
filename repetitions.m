@@ -10,8 +10,8 @@ disp('#    Generating 1000 random signals    #')
 disp('#                                      #')
 disp('########################################')
 
-reps = 2;
-samples = 250;
+reps = 5;
+samples = 300;
 
 figure()
 
