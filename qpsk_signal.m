@@ -25,7 +25,7 @@ qpsksig = oddNrzData.*quadPhaseOsc + evenNrzData.*inPhaseOsc;
 
 qpskspec = abs(fft(qpsksig));
 
-% qpskspec = filter([0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 ...
-%     0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 ], 1, qpskspec);
+ qpskspec = filter([0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 ...
+     0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 ], 1, qpskspec);
 
 end
