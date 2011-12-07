@@ -11,20 +11,19 @@ disp('#                                      #')
 disp('########################################')
 
 reps = 2;
-samples = 300;
+samples = 150;
 
 figure()
 
 for iter = 1:2:2*reps
     % Generovat signaly, ukladat je do promennych a udelat z nich kolekci
     % pro vhodnou analyzu
-    [sig spec] = qpsk_signal( randsrc( 1,samples,[0,1] ) );
+    [sig spec] = qpsk_signal( randsrc( 1,samples,[0 1] ) );
     subplot(reps, 2, iter)
     plot(sig)
     
     subplot(reps, 2, iter+1)
-    plot(spec)
-    
+    plot(spec)  
 end
 
 %% Evaluating propabilities of missdetection and false alarm

@@ -1,9 +1,9 @@
 %% Funkce, jejimz vystupem bude QPSK signal v casove oblasti
 
-function [qpsksig qpskspec]=qpsk_signal(data)
+function [qpsksig qpskspec data]=qpsk_signal(data)
 
-Rb = 1e3; % Bitrate
-amplitude = 1;
+Rb = 1e2; % Bitrate
+amplitude = 0.8;
 
 
 % Rozlisi liche a sude datove bity
@@ -13,7 +13,7 @@ evenBits = data(2:2:end);
 Fc = 20000; % Kmitocet nosne vlny
 
 % Zakodovana data pomoci skriptu NRZ encoder
-[evenTime,evenNrzData,Fs]=NRZ_Encoder(evenBits,Rb,amplitude,'Polar');
+[evenTime,evenNrzData]=NRZ_Encoder(evenBits,Rb,amplitude,'Polar');
 [oddTime,oddNrzData]=NRZ_Encoder(oddBits,Rb,amplitude,'Polar');
 
 % Vytvori se synfazni a kvadraturni slozka
@@ -25,7 +25,13 @@ qpsksig = oddNrzData.*quadPhaseOsc + evenNrzData.*inPhaseOsc;
 
 qpskspec = abs(fft(qpsksig));
 
- qpskspec = filter([0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 ...
-     0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 ], 1, qpskspec);
+% Vyfiltrujeme Raised Cosine filtrem
+
+des = fdesign.pulseshaping(5, 'Raised Cosine', 'Nsym,Beta', 20, 0.5);
+filt = design(des);
+qpskspec = filter(filt,qpskspec);
+
+% qpskspec = filter([0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 ...
+%     0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 ], 1, qpskspec);
 
 end
