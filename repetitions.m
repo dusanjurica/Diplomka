@@ -11,7 +11,7 @@ disp('#                                      #')
 disp('########################################')
 
 reps = 10;
-samples = 80;
+samples = 30;
 
 figure()
 
@@ -41,7 +41,7 @@ iter = 1;
 for snr = -30:5:25
     sig = qpsk_signal(data_vector, snr);
     subplot(6,2,iter);
-    plot(sig)
+    plot(sig, 'r')
     title(['Actual SNR : ',int2str(snr)]);
     
     iter = iter + 1;
