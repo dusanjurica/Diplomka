@@ -1,14 +1,11 @@
-function [new_threshold]=set_threshold(old_threshold, direction)
+function [new_threshold]=set_threshold(old_threshold, step, direction)
 
     switch direction
         case '+'
-            new_threshold = old_threshold + 0.1;
+            new_threshold = old_threshold + step;
         case '-'
-            new_threshold = old_threshold - 0.1;
-        case '++'
-            new_threshold = old_threshold + 0.5;
-        case '--'
-            new_threshold = old_threshold - 0.5;
+            new_threshold = old_threshold - step;
+            
         otherwise
             new_threshold = old_threshold;
     end

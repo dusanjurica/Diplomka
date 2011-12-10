@@ -13,8 +13,8 @@ function [qpsksig_noisy noise]=qpsk_signal(data, SNR)
     Fc = 2*Rb; % Kmitocet nosne vlny
 
     % Zakodovana data pomoci skriptu NRZ encoder
-    [evenTime,evenNrzData]=NRZ_Encoder(evenBits,Rb,amplitude,'Polar');
-    [oddTime,oddNrzData]=NRZ_Encoder(oddBits,Rb,amplitude,'Polar');
+    [evenTime,evenNrzData]=NRZ_Encoder(evenBits,Rb,amplitude,'manchester');
+    [oddTime,oddNrzData]=NRZ_Encoder(oddBits,Rb,amplitude,'manchester');
 
     % Vytvori se synfazni a kvadraturni slozka
     inPhaseOsc = 1/sqrt(2)*cos(2*pi*Fc*evenTime);
