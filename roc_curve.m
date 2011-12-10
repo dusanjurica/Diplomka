@@ -11,16 +11,16 @@ disp('########################################')
 
 % Pocet vzorku pro simulaci, delka signalu pak bude 5x delsi, nutno
 % zjistit proc?
-samples = 200;
+samples = 100;
 
 % Generuj nahodny datovy vektor
 data_vector =  randsrc(1,samples,[0 1]);
 
 % Pocet vzorku v prumerovacim podvektoru
-M = 10;
+M = 5;
 
 % Testovaci hodnota pomeru SNR, viditelne zmeny jsou v intervalu -1 az 6 dB
-snr = 4;
+snr = -9;
 
 % Moduluj vygenerovana data na nosnou, vznikne qpsk signal
 [sig noise] = qpsk_signal(data_vector, snr);
@@ -67,10 +67,11 @@ plot(noise_squares)
 ylim([0 20])
 
 subplot(313)
+
 P_fa = 0;
 P_d = 0;
 
-for threshold = 0 : 0.2 : 5
+for threshold = 0 : 0.2 : 50
     
     % Analyzuje pouze sum, vypocita P_fa (pravdepodobnost falesneho
     % poplachu)
@@ -81,7 +82,9 @@ for threshold = 0 : 0.2 : 5
         end
     end
     % Pravdepodobnost falesneho poplachu
-    if (P_fa == 0)
+    % P_fa se kazdou iteraci zvetsuje, coz je spravne, matlab tomu
+    % nerozumi
+    if (length(P_fa) == 1) && (P_fa == 0)
         P_fa = mp / length(noise_squares);
     else
         % P_fa se kazdou iteraci zvetsuje, coz je spravne, matlab tomu
@@ -96,20 +99,26 @@ for threshold = 0 : 0.2 : 5
         end
     end
     % Pravdepodobnost spravne detekce
-    if (P_d == 0)
+    % P_d se taky kazdou iteraci zvetsuje, to je taky spravne
+    if (length(P_d) == 1) && (P_d == 0)
         P_d = mp / length(sig_squares);
     else
         % P_d se taky kazdou iteraci zvetsuje, to je taky spravne
         P_d = [P_d, (mp / length(sig_squares))];
     end
+    
 end
 
+disp(P_d)
+disp(P_fa)
+
+figure()
 plot(P_fa, P_d, 'g-');
 title('Receiver operating curve');
 xlabel('P_{fa} - propability of false alarm');
 ylabel('P_d - propability of detection');
-ylim([-0.3 1.5])
-xlim([-0.3 1.5])
+ylim([0 1.05])
+xlim([-0.05 1])
 
 %% Vykresleni signalu a sumu, nic duleziteho
 % Nakreslime
