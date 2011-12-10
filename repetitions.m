@@ -40,9 +40,17 @@ iter = 1;
 
 for snr = -30:5:25
     sig = qpsk_signal(data_vector, snr);
+    % Rozdelim vektor sig na sig/M casti po M vzorcich, sectu jejich
+    % ctverce a porovnam vsechny vzorky, ktere jsou vetsi nez tato metrika
+    % a ktere jsou mensi.
+    M = 10;
+    ssum = 0;
+    for i = 1:length(sig)
+        ssum = ssum + sig(i)^2;
+    end
     subplot(6,2,iter);
     plot(sig, 'r')
-    title(['Actual SNR : ',int2str(snr)]);
+    title(['Actual SNR : ',int2str(snr), ', Decision metric : ', num2str(ssum)]);
     
     iter = iter + 1;
 end
