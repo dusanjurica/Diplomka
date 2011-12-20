@@ -9,4 +9,13 @@
 % Cyklus, ve kterem se signal zasumi, nastavi se prahy, vynesou se body
 % a utvori tak ROC. Pro kazdou hodnotu SNR vzdy jedna ROC krivka
 
-% 
+% Rozmitat hodnotu SNR
+
+for snr=-10:1.5:10
+    
+end
+
+% Rozmitat delku akumulacniho vektoru M
+for M = 5:1:15
+    
+end
