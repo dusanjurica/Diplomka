@@ -1,5 +1,7 @@
-function [ofdm_signal noise]=ofdm_signal(snr)
-
+% function [ofdm_signal noise]=ofdm_signal(snr)         % Komplexni signal
+% function [ofdm_signal_rp noise_rp]=ofdm_signal(snr)     % Pouze realna slozka
+function [ofdm_signal_ip noise_ip]=ofdm_signal(snr)   % Pouze imaginarni
+                                                        % slozka
     Nsymb=64*1000;
     symb=randsrc(1,Nsymb,[-3 -1 1 3])+1j*randsrc(1,Nsymb,[-3 -1 1 3]);
 
@@ -11,7 +13,16 @@ function [ofdm_signal noise]=ofdm_signal(snr)
     norm=max(clean_signal);
     clean_signal=(1/norm).*clean_signal;
     ofdm_signal=awgn(clean_signal, snr, 'measured');
+    
+    % Ziskani realne nebo imaginarni casti signalu, zalezi na potrebe
+    
+    ofdm_signal_rp = real(ofdm_signal);
+    ofdm_signal_ip = imag(ofdm_signal);
+    
     noise = ofdm_signal - clean_signal;
+    
+    noise_rp = real(noise);
+    noise_ip = imag(noise);
     
     % Useful things
     
