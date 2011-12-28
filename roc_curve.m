@@ -23,12 +23,12 @@ M = 10;
 figure()
 
 % Promenne snr
-for snr = -8:1:3
-    % Moduluj vygenerovana data na nosnou, vznikne qpsk signal
-    [sig noise] = qpsk_signal(data_vector, snr);
+for snr = -15:1.5:3
+%     % Moduluj vygenerovana data na nosnou, vznikne qpsk signal
+%     [sig noise] = qpsk_signal(data_vector, snr);
 
     % Generace signalu OFDM
-    % [sig noise] = ofdm_signal(data_vector, snr);
+    [sig noise] = ofdm_signal(snr);
     
     % Prealokace vektoru, kvuli rychlosti
     sig_squares = zeros(1, round(length(sig)/M));
@@ -118,12 +118,12 @@ end
 snr = 0;
 
 figure()
-for M = 1:1:10
+for M = 1:1:12
     % Moduluj vygenerovana data na nosnou, vznikne qpsk signal
-    [sig noise] = qpsk_signal(data_vector, snr);
+    % [sig noise] = qpsk_signal(data_vector, snr);
 
     % Generace signalu OFDM
-    % [sig noise] = ofdm_signal(data_vector, snr);
+    [sig noise] = ofdm_signal(snr);
     
     % Prealokace vektoru, kvuli rychlosti
     sig_squares = zeros(1, round(length(sig)/M));
@@ -197,12 +197,12 @@ for M = 1:1:10
             P_d = [P_d, (mp / length(sig_squares))];
         end
 
-end
+    end
 
 % disp(P_d)
 % disp(P_fa)
 
-plot(P_fa, P_d);
+plot(P_fa, P_d, 'Color', [rand(1), rand(1), rand(1)]);
 title('Receiver operating curve, variable accumulating vector M');
 xlabel('P_{fa} - propability of false alarm');
 ylabel('P_d - propability of detection');
@@ -210,3 +210,5 @@ ylim([0 1.05])
 xlim([0 1.05])
 hold on;
 end
+
+disp('##############   READY   ###############');
