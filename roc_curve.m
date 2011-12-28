@@ -11,19 +11,19 @@ disp('########################################')
 
 % Pocet vzorku pro simulaci, delka signalu pak bude 5x delsi, nutno
 % zjistit proc?
-samples = 5000;
+samples = 500;
 
 % Generuj nahodny datovy vektor
 data_vector =  randsrc(1,samples,[0 1]);
 
-%% Staticke M = 10, promenne snr v intervalu -10:2:10
-M = 10;
+% Staticke M = 10, promenne snr v intervalu -10:2:10
+M = 15;
 
 % Vytvori novy obrazek
 figure()
 
 % Promenne snr
-for snr = -15:1.5:3
+for snr = -15:5:5
 %     % Moduluj vygenerovana data na nosnou, vznikne qpsk signal
 %     [sig noise] = qpsk_signal(data_vector, snr);
 
@@ -66,7 +66,7 @@ for snr = -15:1.5:3
     P_fa = 0;
     P_d = 0;
 
-    for threshold = 0 : 0.2 : 50
+    for threshold = 0 : 0.5 : 50
 
         % Analyzuje pouze sum, vypocita P_fa (pravdepodobnost falesneho
         % poplachu)
@@ -79,14 +79,14 @@ for snr = -15:1.5:3
         % Pravdepodobnost falesneho poplachu
         % P_fa se kazdou iteraci zvetsuje, coz je spravne, matlab tomu
         % nerozumi
-        if (length(P_fa) == 1) && (P_fa == 0)
-            P_fa = mp / length(noise_squares);
+        if ((length(P_fa) == 1) && (P_fa == 0))
+            P_fa = mp / length(noise_squares)*2;
         else
             % P_fa se kazdou iteraci zvetsuje, coz je spravne, matlab tomu
             % nerozumi
-            P_fa = [P_fa, (mp / length(noise_squares))];
+            P_fa = [P_fa, (mp / length(noise_squares)*2)];
         end
-
+        
         mp = 0;
         for i = 1:length(sig_squares)
             if (sig_squares(i) > threshold)
@@ -96,10 +96,10 @@ for snr = -15:1.5:3
         % Pravdepodobnost spravne detekce
         % P_d se taky kazdou iteraci zvetsuje, to je taky spravne
         if (length(P_d) == 1) && (P_d == 0)
-            P_d = mp / length(sig_squares);
+            P_d = mp / length(sig_squares)*2;
         else
             % P_d se taky kazdou iteraci zvetsuje, to je taky spravne
-            P_d = [P_d, (mp / length(sig_squares))];
+            P_d = [P_d, (mp / length(sig_squares)*2)];
         end
     end
     
@@ -118,12 +118,12 @@ end
 snr = 0;
 
 figure()
-for M = 1:1:12
+for M = 1:2:7
     % Moduluj vygenerovana data na nosnou, vznikne qpsk signal
-    % [sig noise] = qpsk_signal(data_vector, snr);
+    [sig noise] = qpsk_signal(data_vector, snr);
 
     % Generace signalu OFDM
-    [sig noise] = ofdm_signal(snr);
+%     [sig noise] = ofdm_signal(snr);
     
     % Prealokace vektoru, kvuli rychlosti
     sig_squares = zeros(1, round(length(sig)/M));
@@ -161,7 +161,7 @@ for M = 1:1:12
     P_fa = 0;
     P_d = 0;
 
-    for threshold = 0 : 0.2 : 50
+    for threshold = 0 : 0.2 : 10
 
         % Analyzuje pouze sum, vypocita P_fa (pravdepodobnost falesneho
         % poplachu)
